@@ -1,0 +1,13 @@
+{
+  "appId": "ai.drezzdon.visionstudio",
+  "appName": "DREZZDON AI",
+  "webDir": "../pwa",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#09090B"
+  }
+}

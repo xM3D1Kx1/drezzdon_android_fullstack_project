@@ -1,0 +1,10 @@
+{
+  "name": "DREZZDON AI — Автоматическая красная разметка фото",
+  "short_name": "DREZZDON AI",
+  "start_url": "./drezzdon_studio.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090B",
+  "theme_color": "#FF1E1E",
+  "description": "Автоматический ИИ-анализ фотографий и генерация красной графической разметки в стиле DREZZDON"
+}
