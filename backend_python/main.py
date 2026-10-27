@@ -1,12 +1,24 @@
 import io
+import os
 import random
 import cv2
 import numpy as np
+import uvicorn
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 app = FastAPI(title="Drezzdon Weirdcore CV Engine")
+
+# Разрешаем запросы с сайта (PWA) и локального ПК
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 SKY_TEXTS = [
     "reminder:\nwater!!",
@@ -70,7 +82,7 @@ def detect_scene_geometry(img_bgr):
     # 1. Поиск главного силуэта/объекта в центральной зоне
     roi = gray[int(h * 0.2):int(h * 0.8), int(w * 0.2):int(w * 0.8)]
     inv = 255 - roi
-     blurred = cv2.GaussianBlur(inv, (15, 15), 0)
+    blurred = cv2.GaussianBlur(inv, (15, 15), 0)
     _, _, _, max_loc = cv2.minMaxLoc(blurred)
     cx = int(w * 0.2) + max_loc[0]
     cy = int(h * 0.2) + max_loc[1]
@@ -174,3 +186,8 @@ async def render_drezzdon(file: UploadFile = File(...)):
     result.save(buf, format="PNG")
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
